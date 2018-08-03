@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>jblink_stats.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;task_lab4&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">task_lab4</a> &gt; <span class="el_source">jblink_stats.java</span></div><h1>jblink_stats.java</h1><pre class="source lang-java linenums">package task_lab4;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+/**
+ * Library of statistical functions using Generics for different statistical
+ * calculations.
+ *
+ * @author Mohamed Jubara Jubara 
+ */
+
+<span class="fc" id="L12">public final class jblink_stats {</span>
+    
+    
+    /**
+ * @param numbersList first Generics type of list Numbers
+ * @return Average  numbersList numbers
+ 
+ */
+
+    public static &lt;T extends Number&gt; double computeAverage(ArrayList&lt;T&gt; numbersList) {
+<span class="fc" id="L22">        double totalSum = computeSum(numbersList);</span>
+<span class="fc" id="L23">        int countNumbers = 0;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        for (int i = 0; i &lt; numbersList.size(); i++) {</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">            if ( numbersList.get(i).doubleValue() &gt;= 0) {</span>
+<span class="fc" id="L26">                countNumbers++;</span>
+            }
+        }
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (countNumbers == 0) {</span>
+            //throw new IllegalArgumentException(&quot;no values are &gt; 0&quot;);
+<span class="fc" id="L31">            return -1;</span>
+        }
+<span class="fc" id="L33">        return totalSum/countNumbers;</span>
+    }
+
+      /**
+ * @param numbersList first Generics type of list Numbers
+ * @return Sum  numbersList numbers
+ 
+ */ 
+    
+    public static &lt;T extends Number&gt; double computeSum(ArrayList&lt;T&gt; numbersList) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (numbersList.size() &lt; 1) {</span>
+            //throw new IllegalArgumentException(&quot;numbersList cannot be empty&quot;);
+<span class="fc" id="L45">            return -1;</span>
+        }
+
+<span class="fc" id="L48">        double sum = 0.0;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (T val : numbersList) {</span>
+            
+<span class="fc" id="L51">            double value = val.doubleValue();</span>
+            
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">            if ( value &gt;= 0) {</span>
+<span class="fc" id="L54">                sum += value;</span>
+                //System.out.println(sum);
+            }
+<span class="fc" id="L57">        }</span>
+<span class="fc" id="L58">        return sum;</span>
+    }
+
+    /**
+ * @param numbersList first Generics type of list Numbers
+ * @return median  numbersList numbers
+ 
+ */ 
+    
+    
+    public static &lt;T extends Number&gt; double computeMedian(ArrayList&lt;T&gt; numbersList) {
+        double med;
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (numbersList.size()%2==0) {</span>
+<span class="fc" id="L71">            int length = numbersList.size()/2-1;</span>
+<span class="fc" id="L72">            med = (fnv(numbersList, length) + fnv(numbersList,length+1))/2;</span>
+<span class="fc" id="L73">        }</span>
+        else
+<span class="fc" id="L75">            med = fnv(numbersList, numbersList.size()/2);</span>
+<span class="fc" id="L76">        return med;</span>
+    }
+    
+    private static &lt;T extends Number&gt; double fnv(ArrayList&lt;T&gt; numbersList, int size) 
+    {
+<span class="fc" id="L81">        ArrayList&lt;T&gt; lt = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L82">        ArrayList&lt;T&gt; gt = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L84">        int pv = numbersList.size()/2;</span>
+        
+<span class="fc" id="L86">        double pv_val = numbersList.get(pv).doubleValue();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        for (T v : numbersList) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (v.doubleValue() &lt; pv_val)</span>
+<span class="fc" id="L89">                lt.add(v);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            else if (v.doubleValue() &gt; pv_val)</span>
+<span class="fc" id="L91">                gt.add(v);</span>
+<span class="fc" id="L92">        }</span>
+        
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if(size &lt; lt.size()) </span>
+<span class="fc" id="L95">            return fnv(lt, size);</span>
+        
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        else if(size &gt;= (numbersList.size() - gt.size())) </span>
+<span class="fc" id="L98">            return fnv(gt,size - (numbersList.size() - gt.size()));</span>
+
+<span class="fc" id="L100">        return pv_val;</span>
+    }
+   /**
+ * @param data first Generics type of list Numbers
+ * @return standard deviation  numbersList numbers
+ 
+    public static &lt;T extends Number&gt; double standardDeviation(ArrayList&lt;T&gt; data) {
+        if (data.size() &lt;= 1) {
+ */
+    public static &lt;T extends Number&gt; double computeStandardDeviation(ArrayList&lt;T&gt; data) {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (data.size() &lt;= 1) {</span>
+           // throw new IllegalArgumentException(&quot;Size of array must be greater than 1&quot;);
+<span class="fc" id="L112">           return -1;</span>
+        }
+
+<span class="fc" id="L115">        int size = data.size();</span>
+<span class="fc" id="L116">        double sum = 0;</span>
+<span class="fc" id="L117">        double avarageValue = computeAverage(data);</span>
+        
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L120">            double value = data.get(i).doubleValue();</span>
+<span class="fc" id="L121">            sum += Math.pow(value - avarageValue,2);</span>
+        }
+<span class="fc" id="L123">        double stdev = Math.sqrt(sum / (size-1));</span>
+<span class="fc" id="L124">        return stdev;</span>
+    }
+    
+
+    // Simple set of tests that confirm that functions operate correctly
+  /**
+ * Main function execute first when program run.
+ *
+ */
+
+   /* public static void main(String[] args) {
+
+        ArrayList&lt;Integer&gt; testDataI = new ArrayList&lt;&gt;(Arrays.asList(9,2,7,4,5,6,3,8,1,10));
+        ArrayList&lt;Double&gt; testDataD = new ArrayList&lt;&gt;(Arrays.asList(2.2, 100.0, 17.5, 30.2, 31.1));
+
+      
+        
+        System.out.printf(&quot;The sum of the Integer array = %.0f\n&quot;, sumNumbers(testDataI));
+       System.out.printf(&quot;The sum of the Double array = %.0f\n&quot;, sumNumbers(testDataD));
+
+        System.out.printf(&quot;The average of the Integer test set = %.2f\n&quot;, averageNumbers(testDataI));
+        System.out.printf(&quot;The average of the Double test set = %.2f\n&quot;, averageNumbers(testDataD));
+
+        System.out.printf(&quot;The median value of the Integer data set = %.2f\n&quot;, medianNumbers(testDataI));
+        
+        System.out.printf(&quot;The median value of the Double data set = %.2f\n&quot;, medianNumbers(testDataD));
+        
+        System.out.printf(&quot;The sample standard deviation of the Integer test set = %.2f\n&quot;, standardDeviation(testDataI));
+        System.out.printf(&quot;The sample standard deviation of the Double test set = %.2f\n&quot;, standardDeviation(testDataD));
+
+    }
+*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
